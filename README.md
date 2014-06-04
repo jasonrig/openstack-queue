@@ -171,7 +171,7 @@ a "hello world" MPI job
 
     ```
 4. Submit the json file, e.g. qsub myjob.json
-5. Monitor the logs to see it in action `tar -f /var/log/openstack-queue.log` or check with qstat
+5. Monitor the logs to see it in action `tail -f /var/log/openstack-queue.log` or check with qstat
 
 some notes on the json file
 ---------------------------
