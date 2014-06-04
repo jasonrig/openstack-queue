@@ -124,7 +124,7 @@ $redis->publish('jobqueue-admin', "shutdown");
 a "hello world" MPI job
 -----------------------
 1. Get the build dependencies: `apt-get install build-essential libopenmpi-dev openmpi-bin`
-2. Build the following MPI code (taken from http://mpitutorial.com/mpi-hello-world/):
+2. Build the following MPI code (taken from http://mpitutorial.com/mpi-hello-world/) using mpicc:
     ```
    #include <mpi.h>
  
