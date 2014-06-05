@@ -35,7 +35,7 @@ Here are some steps for building and installing on Ubuntu. Easily transferrable 
     script
         mkdir -p /tmp/openstack-queue-tmp/
         chown openstack-queue:root /tmp/openstack-queue-tmp/
-        chmod 600 /tmp/openstack-queue-tmp
+        chmod 700 /tmp/openstack-queue-tmp
         cd /tmp/openstack-queue-tmp/
         su -p -s /bin/bash -c "/usr/bin/java -jar /opt/openstack-queue/openstack-queue-0.0.1-SNAPSHOT.jar" openstack-queue >> /var/log/openstack-queue.log 2>&1
     end script
