@@ -15,11 +15,16 @@ Here are some steps for building and installing on Ubuntu. Easily transferrable 
     ```
     mkdir /opt/openstack-queue
     cp ./target/openstack-queue-0.0.1-SNAPSHOT.jar /opt/openstack-queue/
-    cp ./target/dependency-jars/*.jar /opt/openstack-queue/
+    cp -R ./target/dependency-jars/ /opt/openstack-queue/
     ```
 5. Create a directory for configuration files: `mkdir /etc/openstack-queue`
 6. Create a user account under which the queue will run: `sudo useradd -d /etc/openstack-queue -r -s /bin/false openstack-queue`
-7. Create a configuration file (warning: should be readable __only__ by root and the openstack-queue user or else other users may take control of your VMs). Use the openstack-queue.properties example file as a template. It should be stored in the home directory of the openstack-queue user, i.e. /etc/openstack-queue, and must be called openstack-queue.properties.
+7. Create a configuration file (warning: should be readable __only__ by root and the openstack-queue user or else other users may take control of your VMs). Use the openstack-queue.properties example file as a template. It should be stored in the home directory of the openstack-queue user, i.e. /etc/openstack-queue, and must be called openstack-queue.properties. 
+
+    If you run the queue interactively, i.e. not as a service, the configuration file location should be as described by the Apache Commons Configuration docs (http://commons.apache.org/proper/commons-configuration/userguide/howto_properties.html):
+    * in the current directory
+    * in the user home directory
+    * in the classpath
 6. Create an upstart script so you can run this as a service. Here is an example (/etc/init/openstack-queue.conf):
     ```
     description     "OpenStack Queue"
@@ -28,7 +33,6 @@ Here are some steps for building and installing on Ubuntu. Easily transferrable 
     umask 002
 
     script
-        export CLASSPATH=/opt/openstack-queue/
         mkdir -p /tmp/openstack-queue-tmp/
         chown openstack-queue:root /tmp/openstack-queue-tmp/
         chmod 600 /tmp/openstack-queue-tmp
