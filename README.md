@@ -6,7 +6,7 @@ a batch job queueing system for OpenStack-based cloud services
 building and installing
 -----------------------
 
-Here are some steps for building and installing on Ubuntu. Easily transferrable to other distros!
+Here are some steps for building and installing on Ubuntu Trusty. Easily transferrable to other distros!
 
 1. Get the dependencies: `apt-get install maven2 openjdk-7-jdk redis-server`
 2. Clone this repository: `git clone https://github.com/jasonrig/openstack-queue.git`
@@ -52,7 +52,7 @@ emulating PBS(ish) qsub, qstat and qterm
 ----------------------------------------
 Here are some crude examples of how to emulate qsub, qstat and qterm in my own special way. Yes, I use PHP... sorry. But it works!
 
-1. Get the dependencies: `apt-get install php5-cli php5-redis`
+1. Get the dependencies: `apt-get install php5-cli php5-redis php5-json`
 2. Create scripts as desired:
 
 
