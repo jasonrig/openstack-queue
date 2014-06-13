@@ -797,7 +797,7 @@ public class ServerCollection implements Set<Server>, Closeable {
 	 * Copies a file to a node.
 	 * 
 	 * @param node node to copy to
-	 * @param payload data to copy
+	 * @param file data to copy
 	 * @param remoteLocation remote path of file
 	 */
 	public void copyFileToNode(final NodeMetadata node, final File file, final String remoteLocation) {

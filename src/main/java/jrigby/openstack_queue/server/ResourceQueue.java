@@ -327,9 +327,6 @@ public class ResourceQueue extends LinkedBlockingDeque<ResourceRequest> implemen
 	 * If for some reason resources cannot be allocated, {@link ResourceProvisioningCallback#onFailure(Throwable)}
 	 * is called via {@link ResourceRequest#doFailure(Throwable)}.
 	 * 
-	 * This method is synchronized because is calls {@link OSConnection#doVMGarbageCollection()}, which will
-	 * kill any VMs that are in the process of starting. Therefore, this method is NOT thread safe.
-	 * 
 	 * @param request
 	 */
 	private synchronized void allocate(final ResourceRequest request) {
