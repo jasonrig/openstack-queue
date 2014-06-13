@@ -104,6 +104,8 @@ public class QueueCommandProcessor {
 		String[] commandParts = splitCommand(command);
 		
 		try {
+			// ### "killjob" command ###
+			// Deletes a job from the queue
 			if (commandParts[0].equals("killjob")) {
 				logger.debug("killjob command received");
 				// process killjob command
@@ -113,6 +115,12 @@ public class QueueCommandProcessor {
 				}
 				int jobId = Integer.valueOf(commandParts[1]);
 				queue.killJob(jobId);
+			
+			// ### "reloadconfig" command ###
+			// Reloads the configuration file
+			} else if (commandParts[0].equals("reloadconfig")) {
+				ServerSettings.reloadConfigurationFile();
+				logger.debug("Configuration file relaoded.");
 			}
 		} catch (QueueCommandException e) {
 			

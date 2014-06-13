@@ -64,6 +64,13 @@ public class ServerSettings {
 	}
 	
 	/**
+	 * Reloads the configuration file
+	 */
+	public static void reloadConfigurationFile() {
+		obj = new ServerSettings();
+	}
+	
+	/**
 	 * Reads the configuration file, loads settings and sets default values if not
 	 * defined in the configuration file.
 	 * 
