@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -142,7 +143,7 @@ public class ResourceQueue extends LinkedBlockingDeque<ResourceRequest> implemen
 	public ResourceQueue(OSConnection connection) {
 		super();
 		this.connection = connection;
-		runningJobs = new ConcurrentHashMap<JobStatus, ServerCollection>();
+		runningJobs = Collections.synchronizedMap(new TreeMap<JobStatus, ServerCollection>());
 		runningJobFutures = new ConcurrentHashMap<Integer, Future<?>>();
 		startingJobs = Collections.synchronizedSet(new TreeSet<JobStatus>());
 	}
