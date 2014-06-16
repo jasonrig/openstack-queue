@@ -47,6 +47,15 @@ Here are some steps for building and installing on Ubuntu Trusty. Easily transfe
  
 Notes on security: This queue trusts the users to do the right thing! Any user may delete or submit or even terminate the queue by sending the correct commands to the redis message queue. The best way to implement this as far as I see it is to use redis authentication and then create a client that will enforce whatever security policies you want. This has not been done yet!
 
+notes on logging
+----------------
+The upstart script above provides basic logging, however in its default state, DEBUG level logging is generated. Therefore, this file grows rapidly. More sophisticated logging (including log rotation) can be achieved using svlogd, which is part of the runit package in Ubuntu. Setting this up is fairly straightforward.
+
+1. Create a logging directory (e.g. `mkdir /var/log/openstack-queue`)
+2. Set the ownership appropriately (e.g. `chown openstack-queue:root /var/log/openstack-queue`)
+3. Edit the upstart config file, replacing the file redirection to /var/log/openstack-queue.log with a pipe to `svlogd /var/log/openstack-queue/`
+
+In the end, you should have a log file called "current" located in /var/log/openstack-queue with default log rotation options. These can be specified explicitly by creating a file called /var/log/openstack-queue/config -- see svlogd docs (`man svlogd`)
 
 emulating PBS(ish) qsub, qstat and qterm
 ----------------------------------------
