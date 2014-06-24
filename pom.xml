@@ -6,19 +6,20 @@
 	<artifactId>openstack-queue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<repositories>
-		<repository>
-			<id>jclouds-snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+<!--    <repositories>
+                <repository>
+                        <id>jclouds-snapshots</id>
+                        <url>https://repository.apache.org/content/repositories/snapshots</url>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </repository>
+        </repositories>
+-->
 
-	<properties>
-		<jclouds.version>1.8.0-SNAPSHOT</jclouds.version>
-	</properties>
+        <properties>
+                <jclouds.version>1.7.3</jclouds.version>
+        </properties>
 
 	<dependencies>
 		<dependency>
