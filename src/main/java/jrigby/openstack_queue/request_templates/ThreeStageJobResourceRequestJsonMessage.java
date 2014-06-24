@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * This class provides a convenient way to safely convert json into 
@@ -57,7 +58,14 @@ public class ThreeStageJobResourceRequestJsonMessage {
 		ThreeStageJobResourceRequestJsonMessage msg = new Gson().fromJson(json, ThreeStageJobResourceRequestJsonMessage.class);
 		
 		
-		ThreeStageJobResourceRequest req = new ThreeStageJobResourceRequest(msg.groupName, msg.bootstrapScript, msg.executeScript, msg.cleanupScript, msg.resultsPath, stringToFile(msg.payloadFiles));
+		ThreeStageJobResourceRequest req = null;
+		try { // Catch a possible null pointer exception here as a result of invalid json.
+			req = new ThreeStageJobResourceRequest(msg.groupName, msg.bootstrapScript, msg.executeScript, msg.cleanupScript, msg.resultsPath, stringToFile(msg.payloadFiles));
+		} catch (NullPointerException e) {
+			logger.debug("Syntactically valid json produced a null pointer exception.");
+			logger.debug(e.getMessage());
+			throw new JsonSyntaxException(e); // This should be handled by the QueueCommandProcessor
+		}
 		
 		// If the field is null, then stick with the defaults
 		if (msg.defaultLoginUser != null) {
