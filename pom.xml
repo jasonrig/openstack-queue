@@ -29,11 +29,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
-			<artifactId>jclouds-sshj</artifactId>
-			<version>${jclouds.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-jsch</artifactId>
 			<version>${jclouds.version}</version>
 		</dependency>
