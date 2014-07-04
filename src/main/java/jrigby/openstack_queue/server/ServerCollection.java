@@ -186,6 +186,10 @@ public class ServerCollection implements Set<Server>, Closeable {
 		// exchange the keys and have been tested to work on Ubuntu Trusty.
 		for (final NodeMetadata node : keys.keySet()) {
 			final String privateKey = keys.get(node).get("private");
+			
+			// This public key is also registered on the server to the node may connect back to the queue server
+			AuthorizedKeysList.getInstance().registerPublicKey(node, keys.get(node).get("public"));
+			
 			final int nodeIndex = getNodeMetadata().asList().indexOf(node);
 			
 			workers.push(threadPool.submit(new Callable<Void>() {
@@ -1004,6 +1008,12 @@ public class ServerCollection implements Set<Server>, Closeable {
 			nodeLoggersStdErr.get(node).close();
 		}
 		logger.debug("Log files closed.");
+		
+		logger.debug("Deregistering all SSH public keys...");
+		for (NodeMetadata node : getNodeMetadata()) {
+			AuthorizedKeysList.getInstance().deregisterPublicKey(node);
+		}
+		logger.debug("All SSH keys deregistered.");
 		
 		logger.debug("Terminating all instances...");
 		Stack<Future<?>> workers = new Stack<Future<?>>();
