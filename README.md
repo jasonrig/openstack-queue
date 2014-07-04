@@ -18,8 +18,10 @@ Here are some steps for building and installing on Ubuntu Trusty. Easily transfe
     cp -R ./target/dependency-jars/ /opt/openstack-queue/
     ```
 5. Create a directory for configuration files: `mkdir /etc/openstack-queue`
-6. Create a user account under which the queue will run: `sudo useradd -d /etc/openstack-queue -r -s /bin/false openstack-queue`
+6. Create a user account under which the queue will run: `sudo useradd -d /etc/openstack-queue -r -s /bin/bash openstack-queue`
 7. Create a configuration file (warning: should be readable __only__ by root and the openstack-queue user or else other users may take control of your VMs). Use the openstack-queue.properties example file as a template. It should be stored in the home directory of the openstack-queue user, i.e. /etc/openstack-queue, and must be called openstack-queue.properties. 
+8. Create a directory for ssh authorised keys, allowing nodes to log in to the queue server node: `mkdir /etc/openstack-queue/.ssh`
+9. Set appropriate permissions for the .ssh directory: `chown openstack-queue:openstack-queue /etc/openstack-queue/.ssh && chmod 700 /etc/openstack-queue/.ssh`
 
     If you run the queue interactively, i.e. not as a service, the configuration file location should be as described by the Apache Commons Configuration docs (http://commons.apache.org/proper/commons-configuration/userguide/howto_properties.html):
     * in the current directory
