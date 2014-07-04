@@ -84,6 +84,8 @@ public class AuthorizedKeysList {
 				out.println(publicKeys);
 			}
 			out.close();
+			AUTH_KEY_FILE.setReadable(true, true);
+			AUTH_KEY_FILE.setWritable(true, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.warn("Could not write to "+AUTH_KEY_FILE.getAbsolutePath());
