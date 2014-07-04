@@ -10,6 +10,9 @@ import org.jclouds.compute.domain.NodeMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+
 /**
  * Maintains a list of authorised SSH keys in the user's home directory.
  * Assumes a linux distribution that uses ~/.ssh/authorized_keys.
@@ -83,12 +86,17 @@ public class AuthorizedKeysList {
 				out.println(publicKeys);
 			}
 			out.close();
-			AUTH_KEY_FILE.setReadable(true, true);
-			AUTH_KEY_FILE.setWritable(true, true);
+			
+			// Change the permissions -- assumes Linux OS
+			CLibrary libc = (CLibrary) Native.loadLibrary("c", CLibrary.class);
+			libc.chmod(AUTH_KEY_FILE.getAbsolutePath(), 0600);
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.warn("Could not write to "+AUTH_KEY_FILE.getAbsolutePath());
 		}
 	}
 	
+	private interface CLibrary extends Library {
+	    public int chmod(String path, int mode);
+	}
 }
