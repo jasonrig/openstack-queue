@@ -11,6 +11,7 @@ import java.util.UUID;
 import jrigby.openstack_queue.server.ResourcesTemporarilyExceededException;
 import jrigby.openstack_queue.server.ServerCollection;
 
+import jrigby.openstack_queue.server.ServerSettings;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -61,8 +62,13 @@ public class ThreeStageJobCallbackImpl extends ThreeStageJobCallback {
 			logger.debug("Resources temporarily exceeded. Rescheduling job.");
 			return true;
 		} catch (Throwable e1) {
-			logger.debug("Could not create nodes, not rescheduling.");
-			return false;
+            if (ServerSettings.getInstance().rescheduleIfResourcesExhausted()) {
+                logger.debug("Could not create nodes this time. Rescheduling job.");
+                return true;
+            } else {
+                logger.debug("Could not create nodes, not rescheduling.");
+                return false;
+            }
 		}
 	}
 

@@ -51,7 +51,9 @@ public class ServerSettings {
 	private int limitsMaxServerSchedulingAttempts; // How many times to retry server creation of there is an error
 	private long limitsServerSchedulingTimeout; // How long to wait for the VM to be available (ms)
 	private int limitsMaxSimultaneousFileCopies; // At most, how many simultaneous file copy operations may occur at any given time?
-	
+
+    private boolean reschedule_if_resources_exhausted; // If AZs are all used up, decide whether to reschedule
+
 	/**
 	 * Private constructor that must be called via {@link ServerSettings#getInstance()}
 	 */
@@ -100,6 +102,8 @@ public class ServerSettings {
 		this.setLimitsServerSchedulingTimeout(c.getLong("limits.server-scheduling-timeout", 300000L));
 		this.setLimitsMaxSimultaneousServerScheduling(c.getInt("limits.max-simultaneous-server-scheduling", 8));
 		this.setLimitsMaxSimultaneousFileCopies(c.getInt("limits.max-simultaneous-file-copies", 5));
+
+        this.setRescheduleIfResourcesExhausted(c.getBoolean("queue.reschedule_if_resources_exhausted", true));
 	}
 	
 	/**
@@ -257,7 +261,15 @@ public class ServerSettings {
 		this.limitsMaxSimultaneousFileCopies = limitsMaxSimultaneousFileCopies;
 	}
 
-	/**
+    public boolean rescheduleIfResourcesExhausted() {
+        return reschedule_if_resources_exhausted;
+    }
+
+    private void setRescheduleIfResourcesExhausted(boolean reschedule_if_resources_exhausted) {
+        this.reschedule_if_resources_exhausted = reschedule_if_resources_exhausted;
+    }
+
+    /**
 	 * Returns an instance of {@link ServerSettings}
 	 * @return ServerSettings instance
 	 */
