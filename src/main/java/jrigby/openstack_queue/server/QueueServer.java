@@ -115,6 +115,8 @@ public class QueueServer {
 
         out.println("GIT commit ID: "+gitInfoConfig.getString("git.commit.id"));
         out.println(gitInfoConfig.getString("git.commit.time"));
+        out.println();
+        out.println("Server starting...");
     }
 
 }
