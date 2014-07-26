@@ -1,11 +1,16 @@
 package jrigby.openstack_queue.server;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.io.PrintStream;
 
 /**
  * Program entry point
@@ -31,6 +36,8 @@ public class QueueServer {
 	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws InterruptedException {
+
+        printIntro();
 		
 		// If not set elsewhere, set the maximum script execution time to 1 year.
 		// This is a jclouds limit, but we have created our own mechanism to stop
@@ -93,5 +100,21 @@ public class QueueServer {
 		queueThread.join();
 		logger.debug("The queue has now stopped. Goodbye!");
 	}
+
+    private static void printIntro() {
+        PrintStream out = System.out;
+        out.println("=== OpenStack Queue ===");
+        out.println("https://github.com/jasonrig/openstack-queue/");
+        Configuration gitInfoConfig = null;
+        try {
+            gitInfoConfig = new PropertiesConfiguration("git.properties");
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        out.println("GIT commit ID: "+gitInfoConfig.getString("git.commit.id"));
+        out.println(gitInfoConfig.getString("git.commit.time"));
+    }
 
 }
