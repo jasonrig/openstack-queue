@@ -75,6 +75,7 @@ public class ThreeStageJobCallbackImpl extends ThreeStageJobCallback {
 		logger.debug("Distributing payload to all nodes...");
 		// Put payload files into a zip archive
 		File payloadTarFile = new File(UUID.randomUUID().toString()+".tar");
+        payloadTarFile.deleteOnExit();
 		try {
 			FileOutputStream payloadTarOutputStream = new FileOutputStream(payloadTarFile);
 			ArchiveOutputStream payloadTarball = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, payloadTarOutputStream);
@@ -106,7 +107,10 @@ public class ThreeStageJobCallbackImpl extends ThreeStageJobCallback {
 			e1.printStackTrace();
 		} catch (RunScriptOnNodesException e) {
 			e.printStackTrace();
-		}
+		} catch (RuntimeException e) {
+            payloadTarFile.delete(); // Ensure that they payload file will be deleted even on a runtime exception
+            throw e;
+        }
 		
 		payloadTarFile.delete();
 		logger.debug("Payload distribution complete.");
