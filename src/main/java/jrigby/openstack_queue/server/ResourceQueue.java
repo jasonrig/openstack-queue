@@ -417,9 +417,23 @@ public class ResourceQueue extends LinkedBlockingDeque<ResourceRequest> implemen
 
 				public Void call() {
 					setQueueStatusProvisioning(request);
-					ServerCollection nodes = new ServerCollection(connection, request.getDefaultLoginUser(), keyPair, request.getLogPath(), allocatedServers.toArray(new Server[allocatedServers.size()]));
-					
-					// Mark the job as running
+                    ServerCollection nodes = null;
+                    try {
+                        nodes = new ServerCollection(connection, request.getDefaultLoginUser(), keyPair, request.getLogPath(), allocatedServers.toArray(new Server[allocatedServers.size()]));
+                    } catch (ServerProvisioningException e) {
+                        logger.debug("There was a problem provisioning job ID "+request.getId());
+                        e.printStackTrace();
+                        setQueueStatusCompleted(request);
+                        try {
+                            logger.debug("Retrying the failed job.");
+                            ResourceQueue.this.putFirst(request);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    // Mark the job as running
 					setQueueStatusRunning(request, nodes);
 					logger.debug("Job \""+request.getGroupName()+"\" is now running.");
 					request.doSuccess(nodes);

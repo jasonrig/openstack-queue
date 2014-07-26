@@ -94,7 +94,7 @@ public class ServerCollection implements Set<Server>, Closeable {
 	 * @param logPath the path in which to store the server log files
 	 * @param servers an array of server objects
 	 */
-	public ServerCollection(OSConnection connection, String defaultLoginUser, KeyPair keyPair, String logPath, Server...servers) {
+	public ServerCollection(OSConnection connection, String defaultLoginUser, KeyPair keyPair, String logPath, Server...servers) throws ServerProvisioningException {
 		isOpen = true;
 		
 		this.connection = connection;
@@ -149,9 +149,13 @@ public class ServerCollection implements Set<Server>, Closeable {
 		} catch (InterruptedException e) {
 			logger.error("Server provisioning was interrupted!");
 			logger.error(e.getMessage());
+            this.close();
+            throw new ServerProvisioningException(e);
 		} catch (ExecutionException e) {
 			logger.error("Server provisioning could not be completed due to an execution exception.");
 			logger.error(e.getMessage());
+            this.close();
+            throw new ServerProvisioningException(e);
 		}
 	}
 	
