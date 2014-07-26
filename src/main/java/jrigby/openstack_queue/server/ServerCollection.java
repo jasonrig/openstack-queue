@@ -1023,12 +1023,16 @@ public class ServerCollection implements Set<Server>, Closeable {
 			nodeLoggersStdErr.get(node).close();
 		}
 		logger.debug("Log files closed.");
-		
-		logger.debug("Deregistering all SSH public keys...");
-		for (NodeMetadata node : getNodeMetadata()) {
-			AuthorizedKeysList.getInstance().deregisterPublicKey(node);
-		}
-		logger.debug("All SSH keys deregistered.");
+
+        // If this is null, then no public keys are registered at the point,
+        // so skipping is OK.
+        if (this.nodeMetadata != null) {
+            logger.debug("Deregistering all SSH public keys...");
+            for (NodeMetadata node : getNodeMetadata()) {
+                AuthorizedKeysList.getInstance().deregisterPublicKey(node);
+            }
+            logger.debug("All SSH keys deregistered.");
+        }
 		
 		logger.debug("Terminating all instances...");
 		Stack<Future<?>> workers = new Stack<Future<?>>();
