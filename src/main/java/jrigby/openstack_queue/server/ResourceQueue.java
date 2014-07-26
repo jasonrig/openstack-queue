@@ -424,12 +424,8 @@ public class ResourceQueue extends LinkedBlockingDeque<ResourceRequest> implemen
                         logger.debug("There was a problem provisioning job ID "+request.getId());
                         e.printStackTrace();
                         setQueueStatusCompleted(request);
-                        try {
-                            logger.debug("Retrying the failed job.");
-                            ResourceQueue.this.putFirst(request);
-                        } catch (InterruptedException e1) {
-                            e1.printStackTrace();
-                        }
+                        logger.debug("Requeuing the failed job.");
+                        ResourceQueue.this.add(request);
                         return null;
                     }
 
