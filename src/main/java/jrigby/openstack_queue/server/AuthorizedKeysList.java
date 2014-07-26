@@ -55,7 +55,7 @@ public class AuthorizedKeysList {
 	 * @param node the node to which this key belongs
 	 * @param publicKey the public key to register
 	 */
-	public void registerPublicKey(NodeMetadata node, String publicKey) {
+	public synchronized void registerPublicKey(NodeMetadata node, String publicKey) {
 		keys.put(node, publicKey);
 		regenerateAuthorizedKeysFile();
 		logger.debug("Registered public key for "+node.getHostname());
@@ -65,7 +65,7 @@ public class AuthorizedKeysList {
 	 * Deregisters a public key
 	 * @param node the node to deregister
 	 */
-	public void deregisterPublicKey(NodeMetadata node) {
+	public synchronized void deregisterPublicKey(NodeMetadata node) {
 		keys.remove(node);
 		regenerateAuthorizedKeysFile();
 		logger.debug("Deregistered public key for "+node.getHostname());
@@ -74,7 +74,7 @@ public class AuthorizedKeysList {
 	/**
 	 * Generates the public key file list
 	 */
-	private void regenerateAuthorizedKeysFile() {
+	private synchronized void regenerateAuthorizedKeysFile() {
 		if (AUTH_KEY_FILE.exists()) {
 			AUTH_KEY_FILE.delete();
 		}

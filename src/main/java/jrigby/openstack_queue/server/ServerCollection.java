@@ -147,13 +147,24 @@ public class ServerCollection implements Set<Server>, Closeable {
 			serverProvisioningTask1.get();
 			serverProvisioningTask2.get();
 		} catch (InterruptedException e) {
-			logger.error("Server provisioning was interrupted!");
-			logger.error(e.getMessage());
+            logger.error("Server provisioning was interrupted!");
+            logger.error(e.getMessage());
+            logger.debug("Cancelling provisioning tasks.");
+            serverProvisioningTask1.cancel(true);
+            serverProvisioningTask2.cancel(true);
+			logger.debug("Provisioning tasks have been cancelled.");
+
             this.close();
             throw new ServerProvisioningException(e);
 		} catch (ExecutionException e) {
-			logger.error("Server provisioning could not be completed due to an execution exception.");
-			logger.error(e.getMessage());
+            logger.error("Server provisioning could not be completed due to an execution exception.");
+            logger.error(e.getMessage());
+
+            logger.debug("Cancelling provisioning tasks.");
+            serverProvisioningTask1.cancel(true);
+            serverProvisioningTask2.cancel(true);
+            logger.debug("Provisioning tasks have been cancelled.");
+
             this.close();
             throw new ServerProvisioningException(e);
 		}
